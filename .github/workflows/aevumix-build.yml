@@ -1,0 +1,143 @@
+name: Aevumix Linux Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      build-version:
+        description: "Build version"
+        required: true
+        default: "1.0.0"
+        type: string
+      release-branch:
+        description: "Release branch"
+        required: true
+        default: "release"
+        type: choice
+        options:
+          - release
+          - twilight
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x86_64]
+    env:
+      CARGO_TERM_COLOR: always
+      CARGO_INCREMENTAL: 0
+
+    steps:
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update --fix-missing
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip dos2unix yasm nasm \
+            build-essential libgtk2.0-dev libpython3-dev m4 uuid \
+            libasound2-dev libcurl4-openssl-dev libdbus-1-dev libdrm-dev \
+            libdbus-glib-1-dev libgtk-3-dev libpulse-dev libx11-xcb-dev \
+            libxt-dev xvfb lld llvm
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Load Surfer CI setup
+        run: npm run surfer -- ci --brand ${{ inputs.release-branch }} --display-version ${{ inputs.build-version }}
+
+      - name: Download Firefox source
+        run: npm run download
+
+      - name: Install Rust
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain $(cat .rust-toolchain)
+          source $HOME/.cargo/env
+          rustup target add x86_64-unknown-linux-gnu
+
+      - name: Import patches
+        env:
+          SURFER_COMPAT: ${{ matrix.arch }}
+        run: |
+          . "$HOME/.cargo/env"
+          npm run import
+
+      - name: Bootstrap
+        run: |
+          cd engine
+          export SURFER_PLATFORM="linux"
+          ./mach --no-interactive bootstrap --application-choice browser
+          cd ..
+
+      - name: Build
+        env:
+          SURFER_COMPAT: ${{ matrix.arch }}
+          ZEN_RELEASE_BRANCH: ${{ inputs.release-branch }}
+        run: |
+          export SURFER_PLATFORM="linux"
+          . "$HOME/.cargo/env"
+          cd engine
+          export MOZ_BUILD_DATE=$(date +%Y%m%d%H%M%S)
+          ./mach build
+          cd ..
+
+      - name: Package
+        env:
+          SURFER_COMPAT: ${{ matrix.arch }}
+        run: |
+          export SURFER_PLATFORM="linux"
+          export ZEN_RELEASE=1
+          npm run package
+
+      - name: Rename artifacts
+        run: |
+          ls -la dist/
+          mv dist/zen-*.tar.xz "aevumix.linux-${{ matrix.arch }}.tar.xz" || true
+          mv dist/output.mar "aevumix-linux.mar" || true
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          retention-days: 7
+          name: aevumix-linux-${{ matrix.arch }}
+          path: |
+            aevumix.linux-${{ matrix.arch }}.tar.xz
+            aevumix-linux.mar
+            dist/
+
+      - name: Create Release (if version tag)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            aevumix.linux-${{ matrix.arch }}.tar.xz
+            aevumix-linux.mar
+          draft: true
+          generate_release_notes: true
