@@ -1,0 +1,557 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* ============================================
+   Aevumix Browser - AI Features Theme
+   ============================================ */
+
+/* --- CSS Variables --- */
+:root {
+  --aevumix-accent: #6366f1;
+  --aevumix-accent-hover: #818cf8;
+  --aevumix-accent-active: #4f46e5;
+  --aevumix-bg-primary: #0f1117;
+  --aevumix-bg-secondary: #1a1d2e;
+  --aevumix-bg-tertiary: #252838;
+  --aevumix-bg-panel: #1e2030;
+  --aevumix-text-primary: #e2e8f0;
+  --aevumix-text-secondary: #94a3b8;
+  --aevumix-text-muted: #64748b;
+  --aevumix-border: #2d3148;
+  --aevumix-border-hover: #3d4162;
+  --aevumix-success: #22c55e;
+  --aevumix-warning: #f59e0b;
+  --aevumix-error: #ef4444;
+  --aevumix-info: #3b82f6;
+  --aevumix-radius: 8px;
+  --aevumix-radius-sm: 4px;
+  --aevumix-radius-lg: 12px;
+  --aevumix-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --aevumix-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --aevumix-transition: 150ms ease;
+  --aevumix-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* --- AI Chat Sidebar --- */
+.aevumix-chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--aevumix-bg-primary);
+  font-family: var(--aevumix-font);
+  color: var(--aevumix-text-primary);
+}
+
+.aevumix-chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--aevumix-bg-secondary);
+  border-bottom: 1px solid var(--aevumix-border);
+}
+
+.aevumix-chat-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--aevumix-text-primary);
+  background: linear-gradient(135deg, var(--aevumix-accent), #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.aevumix-model-selector {
+  background: var(--aevumix-bg-tertiary);
+  border: 1px solid var(--aevumix-border);
+  border-radius: var(--aevumix-radius-sm);
+  color: var(--aevumix-text-secondary);
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.aevumix-chat-clear-btn {
+  list-style-image: url("chrome://aevumix/content/icons/trash.svg");
+  opacity: 0.6;
+  transition: opacity var(--aevumix-transition);
+}
+
+.aevumix-chat-clear-btn:hover {
+  opacity: 1;
+}
+
+/* Chat Messages */
+.aevumix-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  scroll-behavior: smooth;
+}
+
+.aevumix-chat-message {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  animation: aevumix-fade-in 0.3s ease;
+}
+
+@keyframes aevumix-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.aevumix-message-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.aevumix-avatar-user {
+  background: var(--aevumix-accent);
+}
+
+.aevumix-avatar-assistant {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+}
+
+.aevumix-avatar-error {
+  background: var(--aevumix-error);
+}
+
+.aevumix-message-content {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: var(--aevumix-radius);
+  font-size: 14px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.aevumix-message-user .aevumix-message-content {
+  background: var(--aevumix-accent);
+  color: white;
+  border-bottom-right-radius: var(--aevumix-radius-sm);
+}
+
+.aevumix-message-assistant .aevumix-message-content {
+  background: var(--aevumix-bg-secondary);
+  color: var(--aevumix-text-primary);
+  border-bottom-left-radius: var(--aevumix-radius-sm);
+}
+
+.aevumix-message-error .aevumix-message-content {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--aevumix-error);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.aevumix-message-timestamp {
+  font-size: 10px;
+  color: var(--aevumix-text-muted);
+  margin-top: 4px;
+}
+
+.aevumix-chat-link {
+  color: var(--aevumix-accent-hover);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Typing Indicator */
+.aevumix-typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+}
+
+.aevumix-typing-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--aevumix-text-muted);
+  animation: aevumix-bounce 1.4s infinite both;
+}
+
+@keyframes aevumix-bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+/* Chat Input */
+.aevumix-chat-input-container {
+  padding: 12px 16px;
+  background: var(--aevumix-bg-secondary);
+  border-top: 1px solid var(--aevumix-border);
+}
+
+.aevumix-context-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  margin-bottom: 8px;
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: var(--aevumix-radius-sm);
+  font-size: 11px;
+  color: var(--aevumix-accent-hover);
+}
+
+.aevumix-chat-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.aevumix-chat-input {
+  flex: 1;
+  background: var(--aevumix-bg-tertiary);
+  border: 1px solid var(--aevumix-border);
+  border-radius: var(--aevumix-radius);
+  color: var(--aevumix-text-primary);
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: var(--aevumix-font);
+  resize: none;
+  transition: border-color var(--aevumix-transition);
+}
+
+.aevumix-chat-input:focus {
+  outline: none;
+  border-color: var(--aevumix-accent);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.aevumix-chat-send-btn {
+  background: var(--aevumix-accent);
+  border: none;
+  border-radius: var(--aevumix-radius);
+  color: white;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background var(--aevumix-transition);
+  list-style-image: url("chrome://aevumix/content/icons/send.svg");
+}
+
+.aevumix-chat-send-btn:hover {
+  background: var(--aevumix-accent-hover);
+}
+
+.aevumix-chat-send-btn:active {
+  background: var(--aevumix-accent-active);
+}
+
+/* Quick Actions */
+.aevumix-quick-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.aevumix-quick-action-btn {
+  background: var(--aevumix-bg-tertiary);
+  border: 1px solid var(--aevumix-border);
+  border-radius: 20px;
+  color: var(--aevumix-text-secondary);
+  padding: 4px 12px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all var(--aevumix-transition);
+}
+
+.aevumix-quick-action-btn:hover {
+  background: var(--aevumix-accent);
+  color: white;
+  border-color: var(--aevumix-accent);
+}
+
+/* --- Page Summarizer --- */
+.aevumix-summarizer-panel {
+  background: var(--aevumix-bg-panel);
+  border: 1px solid var(--aevumix-border);
+  border-radius: var(--aevumix-radius-lg);
+  box-shadow: var(--aevumix-shadow);
+  padding: 16px;
+  min-width: 350px;
+  max-width: 500px;
+}
+
+.aevumix-summary-header {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--aevumix-border);
+  padding-bottom: 8px;
+}
+
+.aevumix-summary-tab {
+  background: transparent;
+  border: none;
+  border-radius: var(--aevumix-radius-sm);
+  color: var(--aevumix-text-muted);
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--aevumix-transition);
+}
+
+.aevumix-summary-tab:hover {
+  color: var(--aevumix-text-primary);
+  background: var(--aevumix-bg-tertiary);
+}
+
+.aevumix-summary-tab-active {
+  color: var(--aevumix-accent);
+  background: rgba(99, 102, 241, 0.1);
+  font-weight: 600;
+}
+
+.aevumix-summary-content {
+  color: var(--aevumix-text-primary);
+  font-size: 14px;
+  line-height: 1.7;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.aevumix-summary-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--aevumix-border);
+}
+
+.aevumix-summary-action-btn {
+  background: var(--aevumix-bg-tertiary);
+  border: 1px solid var(--aevumix-border);
+  border-radius: var(--aevumix-radius-sm);
+  color: var(--aevumix-text-secondary);
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.aevumix-summary-action-btn:hover {
+  background: var(--aevumix-accent);
+  color: white;
+  border-color: var(--aevumix-accent);
+}
+
+/* --- Writing Assistant --- */
+.aevumix-suggestion-panel {
+  background: var(--aevumix-bg-panel);
+  border: 1px solid var(--aevumix-border);
+  border-radius: var(--aevumix-radius-lg);
+  box-shadow: var(--aevumix-shadow);
+  padding: 16px;
+  min-width: 300px;
+  max-width: 450px;
+}
+
+.aevumix-suggestion-header {
+  margin-bottom: 8px;
+}
+
+.aevumix-suggestion-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--aevumix-accent);
+}
+
+.aevumix-suggestion-original {
+  color: var(--aevumix-text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 8px 12px;
+  background: var(--aevumix-bg-tertiary);
+  border-radius: var(--aevumix-radius-sm);
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.aevumix-suggestion-arrow {
+  text-align: center;
+  color: var(--aevumix-accent);
+  font-size: 18px;
+  margin: 6px 0;
+}
+
+.aevumix-suggestion-result {
+  color: var(--aevumix-text-primary);
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 10px 14px;
+  background: rgba(99, 102, 241, 0.05);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: var(--aevumix-radius);
+}
+
+.aevumix-suggestion-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.aevumix-suggestion-apply-btn {
+  background: var(--aevumix-accent) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: var(--aevumix-radius-sm) !important;
+}
+
+/* --- Tab Organizer --- */
+.aevumix-grouped-tab {
+  border-left: 3px solid var(--aevumix-accent);
+  transition: border-color var(--aevumix-transition);
+}
+
+.aevumix-grouped-tab[aevumix-group="work"] {
+  border-left-color: #3b82f6;
+}
+
+.aevumix-grouped-tab[aevumix-group="social"] {
+  border-left-color: #22c55e;
+}
+
+.aevumix-grouped-tab[aevumix-group="news"] {
+  border-left-color: #f59e0b;
+}
+
+.aevumix-grouped-tab[aevumix-group="shopping"] {
+  border-left-color: #ec4899;
+}
+
+.aevumix-grouped-tab[aevumix-group="development"] {
+  border-left-color: #8b5cf6;
+}
+
+.aevumix-grouped-tab[aevumix-group="entertainment"] {
+  border-left-color: #ef4444;
+}
+
+.aevumix-grouped-tab[aevumix-group="research"] {
+  border-left-color: #14b8a6;
+}
+
+/* --- Translation Popup --- */
+.aevumix-translation-popup {
+  background: var(--aevumix-bg-panel);
+  border: 1px solid var(--aevumix-border);
+  border-radius: var(--aevumix-radius-lg);
+  box-shadow: var(--aevumix-shadow);
+  padding: 16px;
+  min-width: 300px;
+  max-width: 450px;
+}
+
+.aevumix-translation-header {
+  margin-bottom: 10px;
+}
+
+.aevumix-translation-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--aevumix-accent);
+}
+
+.aevumix-translation-original {
+  color: var(--aevumix-text-muted);
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 8px 12px;
+  background: var(--aevumix-bg-tertiary);
+  border-radius: var(--aevumix-radius-sm);
+}
+
+.aevumix-translation-arrow {
+  text-align: center;
+  color: var(--aevumix-accent);
+  font-size: 18px;
+  margin: 6px 0;
+}
+
+.aevumix-translation-result {
+  color: var(--aevumix-text-primary);
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 10px 14px;
+  background: rgba(99, 102, 241, 0.05);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: var(--aevumix-radius);
+}
+
+/* --- Smart Search --- */
+.aevumix-ai-suggestion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+}
+
+.aevumix-ai-suggestion-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--aevumix-accent);
+}
+
+.aevumix-ai-suggestion-title {
+  font-size: 14px;
+  color: var(--aevumix-text-primary);
+}
+
+.aevumix-ai-suggestion-description {
+  font-size: 12px;
+  color: var(--aevumix-text-secondary);
+  margin-top: 2px;
+}
+
+/* --- Toolbar Buttons --- */
+#aevumix-ai-chat-button {
+  list-style-image: url("chrome://aevumix/content/icons/ai-chat.svg");
+}
+
+#aevumix-summarize-button {
+  list-style-image: url("chrome://aevumix/content/icons/ai-summarize.svg");
+}
+
+#aevumix-organize-tabs-btn {
+  list-style-image: url("chrome://aevumix/content/icons/ai-tabs.svg");
+}
+
+#aevumix-translate-button {
+  list-style-image: url("chrome://aevumix/content/icons/ai-translate.svg");
+}
+
+/* --- Scrollbar Styling --- */
+.aevumix-chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.aevumix-chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.aevumix-chat-messages::-webkit-scrollbar-thumb {
+  background: var(--aevumix-border);
+  border-radius: 3px;
+}
+
+.aevumix-chat-messages::-webkit-scrollbar-thumb:hover {
+  background: var(--aevumix-border-hover);
+}

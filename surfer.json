@@ -1,8 +1,8 @@
 {
-  "name": "Zen Browser",
-  "vendor": "Zen OSS Team",
-  "appId": "zen",
-  "binaryName": "zen",
+  "name": "Aevumix Browser",
+  "vendor": "Aevumix Team",
+  "appId": "aevumix",
+  "binaryName": "aevumix",
   "version": {
     "product": "firefox",
     "version": "152.0.1",
@@ -15,12 +15,12 @@
   "addons": {},
   "brands": {
     "release": {
-      "backgroundColor": "#282A33",
-      "brandShorterName": "Zen",
-      "brandShortName": "Zen",
-      "brandFullName": "Zen Browser",
+      "backgroundColor": "#0D1117",
+      "brandShorterName": "Aevumix",
+      "brandShortName": "Aevumix",
+      "brandFullName": "Aevumix Browser",
       "release": {
-        "displayVersion": "1.21.3b",
+        "displayVersion": "1.0.0",
         "github": {
           "repo": "zen-browser/desktop"
         },
@@ -35,12 +35,12 @@
       }
     },
     "twilight": {
-      "backgroundColor": "#282A33",
-      "brandShorterName": "Zen",
-      "brandShortName": "Twilight",
-      "brandFullName": "Zen Twilight",
+      "backgroundColor": "#0D1117",
+      "brandShorterName": "Aevumix",
+      "brandShortName": "Aevumix Dev",
+      "brandFullName": "Aevumix Dev",
       "release": {
-        "displayVersion": "1.22t",
+        "displayVersion": "1.0.0-dev",
         "github": {
           "repo": "zen-browser/desktop"
         }
@@ -53,5 +53,5 @@
     ],
     "licenseType": "MPL-2.0"
   },
-  "updateHostname": "updates.zen-browser.app"
+  "updateHostname": "updates.aevumix.app"
 }

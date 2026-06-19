@@ -1,0 +1,65 @@
+# Aevumix AI Features Preferences
+# Core AI configuration
+aevumix.ai.enabled=true
+aevumix.ai.api.key=
+aevumix.ai.api.endpoint=https://api.aevumix.app/v1
+aevumix.ai.model=aevumix-default
+aevumix.ai.timeout=30000
+
+# AI Chat Sidebar
+aevumix.ai.chat.enabled=true
+aevumix.ai.chat.sidebar.open=false
+aevumix.ai.chat.history=[]
+aevumix.ai.chat.max_history=50
+aevumix.ai.chat.show_context=true
+aevumix.ai.chat.default_model=aevumix-default
+
+# AI Page Summarizer
+aevumix.ai.summarizer.enabled=true
+aevumix.ai.summarizer.default_mode=brief
+aevumix.ai.summarizer.max_length=800
+aevumix.ai.summarizer.auto_detect=false
+aevumix.ai.summarizer.show_toolbar_button=true
+
+# AI Smart Search
+aevumix.ai.search.enabled=true
+aevumix.ai.search.suggestions=true
+aevumix.ai.search.instant_answers=true
+aevumix.ai.search.natural_language=true
+aevumix.ai.search.max_suggestions=5
+aevumix.ai.search.history=[]
+aevumix.ai.search.cache_size=100
+aevumix.ai.search.debounce_ms=300
+
+# AI Writing Assistant
+aevumix.ai.writing.enabled=true
+aevumix.ai.writing.context_menu=true
+aevumix.ai.writing.inline_suggestions=false
+aevumix.ai.writing.auto_correct=false
+aevumix.ai.writing.style=formal
+aevumix.ai.writing.language=en
+
+# AI Tab Organizer
+aevumix.ai.tabs.enabled=true
+aevumix.ai.tabs.auto_organize=false
+aevumix.ai.tabs.organize_interval=60000
+aevumix.ai.tabs.detect_duplicates=true
+aevumix.ai.tabs.smart_suggestions=true
+aevumix.ai.tabs.groups={}
+aevumix.ai.tabs.show_group_colors=true
+
+# AI Translator
+aevumix.ai.translate.enabled=true
+aevumix.ai.translate.target=en
+aevumix.ai.translate.auto_detect=true
+aevumix.ai.translate.show_bar=true
+aevumix.ai.translate.never=[]
+aevumix.ai.translate.preserve_formatting=true
+aevumix.ai.translate.cache_size=50
+
+# Aevumix General
+aevumix.theme.accent_color=#6366f1
+aevumix.theme.dark_mode=true
+aevumix.telemetry.enabled=false
+aevumix.first_run=true
+aevumix.version=1.0.0
